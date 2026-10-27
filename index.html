@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Sistema de Estudos</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --secondary: #a78bfa;
+            --bg-primary: #1e293b;
+            --bg-secondary: #0f172a;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #475569;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            background: var(--bg-primary);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .tabs {
+            background: var(--bg-primary);
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tabs-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .stats-bar {
+            background: var(--bg-primary);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .search-bar {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .subject-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .subject-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .subject-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .topics-list {
+            margin-top: 1rem;
+        }
+
+        .topic-item {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 1rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .topic-item:hover {
+            background: var(--bg-tertiary);
+            transform: translateX(4px);
+        }
+
+        .topic-item.completed {
+            opacity: 0.6;
+            border-left-color: var(--success);
+        }
+
+        .topic-item.completed .topic-title {
+            text-decoration: line-through;
+        }
+
+        .topic-content {
+            flex: 1;
+        }
+
+        .topic-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .topic-notes {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        .topic-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .topic-actions {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .add-topic-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .add-topic-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        /* Calendário */
+        .calendar-container {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .calendar-nav button {
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .calendar-nav button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-month {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .calendar-day:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .calendar-day.today {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-day.has-event {
+            background: var(--bg-tertiary);
+        }
+
+        .calendar-day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .calendar-day.today.has-event::after {
+            background: white;
+        }
+
+        .calendar-day-number {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .calendar-events {
+            margin-top: 2rem;
+        }
+
+        .event-item {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .event-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .event-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Flashcards */
+        .flashcards-container {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .flashcard-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .flashcard-deck-selector {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .flashcard-counter {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin: 2rem auto;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .flashcard-back {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-content {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .flashcard-hint {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .flashcard-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .flashcard-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .flashcard-btn.prev {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .flashcard-btn.next {
+            background: var(--primary);
+            color: white;
+        }
+
+        .flashcard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .flashcard-list {
+            margin-top: 2rem;
+        }
+
+        .flashcard-item {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .flashcard-item-content {
+            flex: 1;
+        }
+
+        .flashcard-question {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .flashcard-answer {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 0 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+
+            .calendar-grid {
+                gap: 0.25rem;
+            }
+
+            .calendar-day {
+                padding: 0.25rem;
+            }
+
+            .flashcard {
+                height: 300px;
+            }
+
+            .flashcard-content {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📚 Meu Sistema de Estudos</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="exportData()">
+                    💾 Exportar
+                </button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
+                    📥 Importar
+                </button>
+                <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importData(event)">
+                <button class="btn btn-secondary" onclick="toggleTheme()">
+                    🌓 Tema
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="tabs">
+        <div class="tabs-content">
+            <button class="tab active" onclick="switchTab('materias')">📖 Matérias</button>
+            <button class="tab" onclick="switchTab('calendario')">📅 Calendário</button>
+            <button class="tab" onclick="switchTab('flashcards')">🎴 Flashcards</button>
+            <button class="tab" onclick="switchTab('progresso')">📊 Progresso</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Aba Matérias -->
+        <div id="materias" class="tab-content active">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar matérias, temas ou tags..." oninput="filterContent()">
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <button class="btn btn-primary" onclick="openSubjectModal()">
+                    ➕ Nova Matéria
+                </button>
+            </div>
+
+            <div class="subjects-grid" id="subjectsGrid">
+                <!-- Matérias serão inseridas aqui dinamicamente -->
+            </div>
+
+            <div class="empty-state" id="emptyState">
+                <div class="empty-state-icon">📖</div>
+                <h2>Nenhuma matéria cadastrada</h2>
+                <p>Clique em "Nova Matéria" para começar a organizar seus estudos!</p>
+            </div>
+        </div>
+
+        <!-- Aba Calendário -->
+        <div id="calendario" class="tab-content">
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button onclick="changeMonth(-1)">◀</button>
+                        <span class="calendar-month" id="calendarMonth"></span>
+                        <button onclick="changeMonth(1)">▶</button>
+                    </div>
+                    <button class="btn btn-primary" onclick="openEventModal()">➕ Novo Evento</button>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendário será inserido aqui -->
+                </div>
+
+                <div class="calendar-events" id="calendarEvents">
+                    <!-- Eventos serão inseridos aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Flashcards -->
+        <div id="flashcards" class="tab-content">
+            <div class="flashcards-container">
+                <div class="flashcard-controls">
+                    <div class="flashcard-deck-selector">
+                        <label for="deckSelector">Baralho:</label>
+                        <select id="deckSelector" onchange="loadDeck()">
+                            <option value="all">Todos os Flashcards</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="openFlashcardModal()">➕ Novo Flashcard</button>
+                </div>
+
+                <div class="flashcard-counter" id="flashcardCounter">
+                    Card 1 de 0
+                </div>
+
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="flashcard-content" id="flashcardQuestion">
+                                Clique em "Novo Flashcard" para começar
+                            </div>
+                            <div class="flashcard-hint">Clique para ver a resposta</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="flashcard-content" id="flashcardAnswer">
+                                Resposta aparecerá aqui
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-actions">
+                    <button class="flashcard-btn prev" onclick="prevCard()">◀ Anterior</button>
+                    <button class="flashcard-btn next" onclick="nextCard()">Próximo ▶</button>
+                </div>
+
+                <div class="flashcard-list" id="flashcardList">
+                    <!-- Lista de flashcards será inserida aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Progresso -->
+        <div id="progresso" class="tab-content">
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalSubjects">0</div>
+                    <div class="stat-label">Matérias</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalTopics">0</div>
+                    <div class="stat-label">Temas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="completedTopics">0</div>
+                    <div class="stat-label">Concluídos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="completionRate">0%</div>
+                    <div class="stat-label">Taxa de Conclusão</div>
+                </div>
+            </div>
+
+            <div id="progressDetails">
+                <!-- Detalhes do progresso serão inseridos aqui -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para adicionar/editar matéria -->
+    <div class="modal" id="subjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="subjectModalTitle">Nova Matéria</h2>
+                <button class="close-btn" onclick="closeSubjectModal()">&times;</button>
+            </div>
+            <form id="subjectForm" onsubmit="saveSubject(event)">
+                <input type="hidden" id="subjectId">
+                <div class="form-group">
+                    <label for="subjectName">Nome da Matéria *</label>
+                    <input type="text" id="subjectName" required placeholder="Ex: Programação, Matemática, Inglês">
+                </div>
+                <div class="form-group">
+                    <label for="subjectDescription">Descrição</label>
+                    <textarea id="subjectDescription" placeholder="Descreva o objetivo ou foco desta matéria..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="subjectColor">Cor</label>
+                    <select id="subjectColor">
+                        <option value="#6366f1">Roxo</option>
+                        <option value="#8b5cf6">Violeta</option>
+                        <option value="#ec4899">Rosa</option>
+                        <option value="#ef4444">Vermelho</option>
+                        <option value="#f59e0b">Laranja</option>
+                        <option value="#10b981">Verde</option>
+                        <option value="#06b6d4">Ciano</option>
+                        <option value="#3b82f6">Azul</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeSubjectModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar/editar tema -->
+    <div class="modal" id="topicModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="topicModalTitle">Novo Tema</h2>
+                <button class="close-btn" onclick="closeTopicModal()">&times;</button>
+            </div>
+            <form id="topicForm" onsubmit="saveTopic(event)">
+                <input type="hidden" id="topicId">
+                <input type="hidden" id="topicSubjectId">
+                <div class="form-group">
+                    <label for="topicTitle">Título do Tema *</label>
+                    <input type="text" id="topicTitle" required placeholder="Ex: Variáveis e Tipos de Dados">
+                </div>
+                <div class="form-group">
+                    <label for="topicNotes">Anotações / Conteúdo</label>
+                    <textarea id="topicNotes" placeholder="Suas anotações, resumos, links, etc..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="topicTags">Tags (separadas por vírgula)</label>
+                    <input type="text" id="topicTags" placeholder="Ex: javascript, básico, importante">
+                </div>
+                <div class="form-group">
+                    <label for="topicPriority">Prioridade</label>
+                    <select id="topicPriority">
+                        <option value="baixa">Baixa</option>
+                        <option value="media" selected>Média</option>
+                        <option value="alta">Alta</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeTopicModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar/editar evento -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="eventModalTitle">Novo Evento</h2>
+                <button class="close-btn" onclick="closeEventModal()">&times;</button>
+            </div>
+            <form id="eventForm" onsubmit="saveEvent(event)">
+                <input type="hidden" id="eventId">
+                <div class="form-group">
+                    <label for="eventTitle">Título do Evento *</label>
+                    <input type="text" id="eventTitle" required placeholder="Ex: Estudar JavaScript, Prova de Cálculo">
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Data *</label>
+                    <input type="date" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventTime">Hora</label>
+                    <input type="time" id="eventTime">
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Descrição</label>
+                    <textarea id="eventDescription" placeholder="Detalhes do evento..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEventModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar/editar flashcard -->
+    <div class="modal" id="flashcardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="flashcardModalTitle">Novo Flashcard</h2>
+                <button class="close-btn" onclick="closeFlashcardModal()">&times;</button>
+            </div>
+            <form id="flashcardForm" onsubmit="saveFlashcard(event)">
+                <input type="hidden" id="flashcardId">
+                <div class="form-group">
+                    <label for="flashcardQuestionInput">Pergunta *</label>
+                    <textarea id="flashcardQuestionInput" required placeholder="Digite a pergunta..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="flashcardAnswerInput">Resposta *</label>
+                    <textarea id="flashcardAnswerInput" required placeholder="Digite a resposta..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="flashcardDeck">Baralho</label>
+                    <input type="text" id="flashcardDeck" placeholder="Ex: JavaScript, Matemática, Inglês">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeFlashcardModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Classe principal do sistema
+        class StudySystem {
+            constructor() {
+                this.subjects = this.loadFromStorage('subjects') || [];
+                this.events = this.loadFromStorage('events') || [];
+                this.flashcards = this.loadFromStorage('flashcards') || [];
+                this.currentDate = new Date();
+                this.currentCardIndex = 0;
+                this.currentDeck = 'all';
+                
+                this.render();
+                this.renderCalendar();
+                this.renderFlashcards();
+                this.updateStats();
+                this.updateProgress();
+            }
+
+            loadFromStorage(key) {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            }
+
+            saveToStorage(key, data) {
+                localStorage.setItem(key, JSON.stringify(data));
+            }
+
+            generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            // ===== MATÉRIAS =====
+            addSubject(name, description, color) {
+                const subject = {
+                    id: this.generateId(),
+                    name,
+                    description,
+                    color,
+                    topics: [],
+                    createdAt: new Date().toISOString()
+                };
+                this.subjects.push(subject);
+                this.saveToStorage('subjects', this.subjects);
+                this.render();
+                this.updateStats();
+                this.updateProgress();
+                this.showNotification('Matéria adicionada com sucesso!');
+            }
+
+            editSubject(id, name, description, color) {
+                const subject = this.subjects.find(s => s.id === id);
+                if (subject) {
+                    subject.name = name;
+                    subject.description = description;
+                    subject.color = color;
+                    this.saveToStorage('subjects', this.subjects);
+                    this.render();
+                    this.showNotification('Matéria atualizada!');
+                }
+            }
+
+            deleteSubject(id) {
+                if (confirm('Tem certeza que deseja remover esta matéria e todos os seus temas?')) {
+                    this.subjects = this.subjects.filter(s => s.id !== id);
+                    this.saveToStorage('subjects', this.subjects);
+                    this.render();
+                    this.updateStats();
+                    this.updateProgress();
+                    this.showNotification('Matéria removida!');
+                }
+            }
+
+            addTopic(subjectId, title, notes, tags, priority) {
+                const subject = this.subjects.find(s => s.id === subjectId);
+                if (subject) {
+                    const topic = {
+                        id: this.generateId(),
+                        title,
+                        notes,
+                        tags: tags.split(',').map(t => t.trim()).filter(t => t),
+                        priority,
+                        completed: false,
+                        createdAt: new Date().toISOString()
+                    };
+                    subject.topics.push(topic);
+                    this.saveToStorage('subjects', this.subjects);
+                    this.render();
+                    this.updateStats();
+                    this.updateProgress();
+                    this.showNotification('Tema adicionado!');
+                }
+            }
+
+            editTopic(subjectId, topicId, title, notes, tags, priority) {
+                const subject = this.subjects.find(s => s.id === subjectId);
+                if (subject) {
+                    const topic = subject.topics.find(t => t.id === topicId);
+                    if (topic) {
+                        topic.title = title;
+                        topic.notes = notes;
+                        topic.tags = tags.split(',').map(t => t.trim()).filter(t => t);
+                        topic.priority = priority;
+                        this.saveToStorage('subjects', this.subjects);
+                        this.render();
+                        this.showNotification('Tema atualizado!');
+                    }
+                }
+            }
+
+            deleteTopic(subjectId, topicId) {
+                if (confirm('Tem certeza que deseja remover este tema?')) {
+                    const subject = this.subjects.find(s => s.id === subjectId);
+                    if (subject) {
+                        subject.topics = subject.topics.filter(t => t.id !== topicId);
+                        this.saveToStorage('subjects', this.subjects);
+                        this.render();
+                        this.updateStats();
+                        this.updateProgress();
+                        this.showNotification('Tema removido!');
+                    }
+                }
+            }
+
+            toggleTopicCompletion(subjectId, topicId) {
+                const subject = this.subjects.find(s => s.id === subjectId);
+                if (subject) {
+                    const topic = subject.topics.find(t => t.id === topicId);
+                    if (topic) {
+                        topic.completed = !topic.completed;
+                        this.saveToStorage('subjects', this.subjects);
+                        this.render();
+                        this.updateProgress();
+                        this.showNotification(topic.completed ? 'Tema concluído! 🎉' : 'Tema reaberto');
+                    }
+                }
+            }
+
+            // ===== EVENTOS =====
+            addEvent(title, date, time, description) {
+                const event = {
+                    id: this.generateId(),
+                    title,
+                    date,
+                    time,
+                    description,
+                    createdAt: new Date().toISOString()
+                };
+                this.events.push(event);
+                this.saveToStorage('events', this.events);
+                this.renderCalendar();
+                this.showNotification('Evento adicionado!');
+            }
+
+            editEvent(id, title, date, time, description) {
+                const event = this.events.find(e => e.id === id);
+                if (event) {
+                    event.title = title;
+                    event.date = date;
+                    event.time = time;
+                    event.description = description;
+                    this.saveToStorage('events', this.events);
+                    this.renderCalendar();
+                    this.showNotification('Evento atualizado!');
+                }
+            }
+
+            deleteEvent(id) {
+                if (confirm('Tem certeza que deseja remover este evento?')) {
+                    this.events = this.events.filter(e => e.id !== id);
+                    this.saveToStorage('events', this.events);
+                    this.renderCalendar();
+                    this.showNotification('Evento removido!');
+                }
+            }
+
+            // ===== FLASHCARDS =====
+            addFlashcard(question, answer, deck) {
+                const flashcard = {
+                    id: this.generateId(),
+                    question,
+                    answer,
+                    deck: deck || 'Geral',
+                    createdAt: new Date().toISOString()
+                };
+                this.flashcards.push(flashcard);
+                this.saveToStorage('flashcards', this.flashcards);
+                this.renderFlashcards();
+                this.updateDeckSelector();
+                this.showNotification('Flashcard adicionado!');
+            }
+
+            editFlashcard(id, question, answer, deck) {
+                const flashcard = this.flashcards.find(f => f.id === id);
+                if (flashcard) {
+                    flashcard.question = question;
+                    flashcard.answer = answer;
+                    flashcard.deck = deck || 'Geral';
+                    this.saveToStorage('flashcards', this.flashcards);
+                    this.renderFlashcards();
+                    this.updateDeckSelector();
+                    this.showNotification('Flashcard atualizado!');
+                }
+            }
+
+            deleteFlashcard(id) {
+                if (confirm('Tem certeza que deseja remover este flashcard?')) {
+                    this.flashcards = this.flashcards.filter(f => f.id !== id);
+                    this.saveToStorage('flashcards', this.flashcards);
+                    this.renderFlashcards();
+                    this.updateDeckSelector();
+                    this.showNotification('Flashcard removido!');
+                }
+            }
+
+            // ===== RENDERIZAÇÃO =====
+            render() {
+                const grid = document.getElementById('subjectsGrid');
+                const emptyState = document.getElementById('emptyState');
+
+                if (this.subjects.length === 0) {
+                    grid.innerHTML = '';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                grid.innerHTML = this.subjects.map(subject => {
+                    const totalTopics = subject.topics.length;
+                    const completedTopics = subject.topics.filter(t => t.completed).length;
+                    const progress = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0;
+
+                    return `
+                        <div class="subject-card" style="border-left: 4px solid ${subject.color}">
+                            <div class="subject-header">
+                                <div>
+                                    <h2 class="subject-title" style="color: ${subject.color}">${subject.name}</h2>
+                                    <p class="subject-description">${subject.description || 'Sem descrição'}</p>
+                                </div>
+                                <div class="subject-actions">
+                                    <button class="icon-btn" onclick="editSubject('${subject.id}')" title="Editar matéria">✏️</button>
+                                    <button class="icon-btn" onclick="deleteSubject('${subject.id}')" title="Remover matéria">🗑️</button>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="progress-text">${completedTopics} de ${totalTopics} temas concluídos (${Math.round(progress)}%)</div>
+                            
+                            <div class="topics-list">
+                                ${subject.topics.map(topic => `
+                                    <div class="topic-item ${topic.completed ? 'completed' : ''}" style="border-left-color: ${subject.color}">
+                                        <input type="checkbox" class="checkbox" ${topic.completed ? 'checked' : ''} 
+                                               onchange="toggleTopicCompletion('${subject.id}', '${topic.id}')">
+                                        <div class="topic-content">
+                                            <div class="topic-title">${topic.title}</div>
+                                            ${topic.notes ? `<div class="topic-notes">${topic.notes}</div>` : ''}
+                                            ${topic.tags.length > 0 ? `
+                                                <div class="topic-tags">
+                                                    ${topic.tags.map(tag => `<span class="tag" style="background: ${subject.color}">${tag}</span>`).join('')}
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                        <div class="topic-actions">
+                                            <button class="icon-btn" onclick="editTopic('${subject.id}', '${topic.id}')" title="Editar tema">✏️</button>
+                                            <button class="icon-btn" onclick="deleteTopic('${subject.id}', '${topic.id}')" title="Remover tema">🗑️</button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                <button class="add-topic-btn" onclick="openTopicModal('${subject.id}')">
+                                    ➕ Adicionar Tema
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            renderCalendar() {
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+                
+                const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                                   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+                
+                document.getElementById('calendarMonth').textContent = `${monthNames[month]} ${year}`;
+                
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const today = new Date();
+                
+                let calendarHTML = '';
+                const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                dayNames.forEach(day => {
+                    calendarHTML += `<div class="calendar-day-header">${day}</div>`;
+                });
+                
+                for (let i = 0; i < firstDay; i++) {
+                    calendarHTML += '<div class="calendar-day"></div>';
+                }
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const hasEvent = this.events.some(e => e.date === dateStr);
+                    const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+                    
+                    calendarHTML += `
+                        <div class="calendar-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" 
+                             onclick="showDayEvents('${dateStr}')">
+                            <div class="calendar-day-number">${day}</div>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('calendarGrid').innerHTML = calendarHTML;
+                this.renderEvents();
+            }
+
+            renderEvents() {
+                const eventsDiv = document.getElementById('calendarEvents');
+                const sortedEvents = [...this.events].sort((a, b) => new Date(a.date) - new Date(b.date));
+                
+                if (sortedEvents.length === 0) {
+                    eventsDiv.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Nenhum evento agendado</p>';
+                    return;
+                }
+                
+                eventsDiv.innerHTML = '<h3 style="margin-bottom: 1rem; color: var(--primary);">Próximos Eventos</h3>' +
+                    sortedEvents.slice(0, 10).map(event => `
+                        <div class="event-item">
+                            <div class="event-date">${new Date(event.date + 'T00:00:00').toLocaleDateString('pt-BR')} ${event.time ? 'às ' + event.time : ''}</div>
+                            <div class="event-title">${event.title}</div>
+                            ${event.description ? `<div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.3rem;">${event.description}</div>` : ''}
+                            <div style="margin-top: 0.5rem;">
+                                <button class="icon-btn" onclick="editEvent('${event.id}')" title="Editar">✏️</button>
+                                <button class="icon-btn" onclick="deleteEvent('${event.id}')" title="Remover">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+
+            renderFlashcards() {
+                const deckCards = this.currentDeck === 'all' 
+                    ? this.flashcards 
+                    : this.flashcards.filter(f => f.deck === this.currentDeck);
+                
+                if (deckCards.length === 0) {
+                    document.getElementById('flashcardQuestion').textContent = 'Nenhum flashcard neste baralho';
+                    document.getElementById('flashcardAnswer').textContent = 'Clique em "Novo Flashcard" para adicionar';
+                    document.getElementById('flashcardCounter').textContent = '0 cards';
+                    return;
+                }
+                
+                if (this.currentCardIndex >= deckCards.length) {
+                    this.currentCardIndex = 0;
+                }
+                
+                const card = deckCards[this.currentCardIndex];
+                document.getElementById('flashcardQuestion').textContent = card.question;
+                document.getElementById('flashcardAnswer').textContent = card.answer;
+                document.getElementById('flashcardCounter').textContent = `Card ${this.currentCardIndex + 1} de ${deckCards.length}`;
+                
+                const listDiv = document.getElementById('flashcardList');
+                listDiv.innerHTML = '<h3 style="margin-bottom: 1rem; color: var(--primary);">Todos os Flashcards</h3>' +
+                    deckCards.map(card => `
+                        <div class="flashcard-item">
+                            <div class="flashcard-item-content">
+                                <div class="flashcard-question">${card.question}</div>
+                                <div class="flashcard-answer">${card.answer}</div>
+                                <div style="margin-top: 0.5rem;">
+                                    <span class="tag">${card.deck}</span>
+                                </div>
+                            </div>
+                            <div class="topic-actions">
+                                <button class="icon-btn" onclick="editFlashcard('${card.id}')" title="Editar">✏️</button>
+                                <button class="icon-btn" onclick="deleteFlashcard('${card.id}')" title="Remover">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+
+            updateDeckSelector() {
+                const selector = document.getElementById('deckSelector');
+                const decks = [...new Set(this.flashcards.map(f => f.deck))];
+                
+                selector.innerHTML = '<option value="all">Todos os Flashcards</option>' +
+                    decks.map(deck => `<option value="${deck}" ${deck === this.currentDeck ? 'selected' : ''}>${deck}</option>`).join('');
+            }
+
+            updateStats() {
+                const totalSubjects = this.subjects.length;
+                const totalTopics = this.subjects.reduce((sum, s) => sum + s.topics.length, 0);
+                
+                document.getElementById('totalSubjects').textContent = totalSubjects;
+                document.getElementById('totalTopics').textContent = totalTopics;
+            }
+
+            updateProgress() {
+                const totalTopics = this.subjects.reduce((sum, s) => sum + s.topics.length, 0);
+                const completedTopics = this.subjects.reduce((sum, s) => 
+                    sum + s.topics.filter(t => t.completed).length, 0);
+                const completionRate = totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
+                
+                document.getElementById('totalTopics').textContent = totalTopics;
+                document.getElementById('completedTopics').textContent = completedTopics;
+                document.getElementById('completionRate').textContent = completionRate + '%';
+                
+                const progressDiv = document.getElementById('progressDetails');
+                progressDiv.innerHTML = this.subjects.map(subject => {
+                    const total = subject.topics.length;
+                    const completed = subject.topics.filter(t => t.completed).length;
+                    const progress = total > 0 ? (completed / total) * 100 : 0;
+                    
+                    return `
+                        <div class="subject-card" style="border-left: 4px solid ${subject.color}; margin-bottom: 1rem;">
+                            <h3 style="color: ${subject.color}; margin-bottom: 1rem;">${subject.name}</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="progress-text">${completed} de ${total} temas concluídos (${Math.round(progress)}%)</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            filter(query) {
+                query = query.toLowerCase();
+                return this.subjects.filter(subject => {
+                    const matchesSubject = subject.name.toLowerCase().includes(query) ||
+                                         subject.description.toLowerCase().includes(query);
+                    const matchesTopic = subject.topics.some(topic =>
+                        topic.title.toLowerCase().includes(query) ||
+                        topic.notes.toLowerCase().includes(query) ||
+                        topic.tags.some(tag => tag.toLowerCase().includes(query))
+                    );
+                    return matchesSubject || matchesTopic;
+                });
+            }
+
+            exportData() {
+                const data = {
+                    subjects: this.subjects,
+                    events: this.events,
+                    flashcards: this.flashcards,
+                    exportDate: new Date().toISOString()
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `estudos-backup-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                this.showNotification('Dados exportados com sucesso!');
+            }
+
+            importData(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (confirm('Isso substituirá todos os dados atuais. Deseja continuar?')) {
+                            this.subjects = data.subjects || [];
+                            this.events = data.events || [];
+                            this.flashcards = data.flashcards || [];
+                            this.saveToStorage('subjects', this.subjects);
+                            this.saveToStorage('events', this.events);
+                            this.saveToStorage('flashcards', this.flashcards);
+                            this.render();
+                            this.renderCalendar();
+                            this.renderFlashcards();
+                            this.updateStats();
+                            this.updateProgress();
+                            this.updateDeckSelector();
+                            this.showNotification('Dados importados com sucesso!');
+                        }
+                    } catch (error) {
+                        alert('Erro ao importar arquivo. Verifique se é um arquivo JSON válido.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Inicializar sistema
+        const studySystem = new StudySystem();
+
+        // Funções de navegação entre abas
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Funções de calendário
+        function changeMonth(delta) {
+            studySystem.currentDate.setMonth(studySystem.currentDate.getMonth() + delta);
+            studySystem.renderCalendar();
+        }
+
+        function showDayEvents(dateStr) {
+            const dayEvents = studySystem.events.filter(e => e.date === dateStr);
+            if (dayEvents.length > 0) {
+                alert(`Eventos em ${new Date(dateStr + 'T00:00:00').toLocaleDateString('pt-BR')}:\n\n` + 
+                      dayEvents.map(e => `• ${e.title}${e.time ? ' às ' + e.time : ''}`).join('\n'));
+            }
+        }
+
+        // Funções de flashcards
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            const deckCards = studySystem.currentDeck === 'all' 
+                ? studySystem.flashcards 
+                : studySystem.flashcards.filter(f => f.deck === studySystem.currentDeck);
+            
+            if (deckCards.length > 0) {
+                studySystem.currentCardIndex = (studySystem.currentCardIndex + 1) % deckCards.length;
+                document.getElementById('flashcard').classList.remove('flipped');
+                studySystem.renderFlashcards();
+            }
+        }
+
+        function prevCard() {
+            const deckCards = studySystem.currentDeck === 'all' 
+                ? studySystem.flashcards 
+                : studySystem.flashcards.filter(f => f.deck === studySystem.currentDeck);
+            
+            if (deckCards.length > 0) {
+                studySystem.currentCardIndex = studySystem.currentCardIndex === 0 
+                    ? deckCards.length - 1 
+                    : studySystem.currentCardIndex - 1;
+                document.getElementById('flashcard').classList.remove('flipped');
+                studySystem.renderFlashcards();
+            }
+        }
+
+        function loadDeck() {
+            studySystem.currentDeck = document.getElementById('deckSelector').value;
+            studySystem.currentCardIndex = 0;
+            document.getElementById('flashcard').classList.remove('flipped');
+            studySystem.renderFlashcards();
+        }
+
+        // Funções globais para modais
+        function openSubjectModal(id = null) {
+            const modal = document.getElementById('subjectModal');
+            const title = document.getElementById('subjectModalTitle');
+            const form = document.getElementById('subjectForm');
+
+            if (id) {
+                const subject = studySystem.subjects.find(s => s.id === id);
+                title.textContent = 'Editar Matéria';
+                document.getElementById('subjectId').value = subject.id;
+                document.getElementById('subjectName').value = subject.name;
+                document.getElementById('subjectDescription').value = subject.description || '';
+                document.getElementById('subjectColor').value = subject.color;
+            } else {
+                title.textContent = 'Nova Matéria';
+                form.reset();
+                document.getElementById('subjectId').value = '';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeSubjectModal() {
+            document.getElementById('subjectModal').classList.remove('active');
+        }
+
+        function saveSubject(event) {
+            event.preventDefault();
+            const id = document.getElementById('subjectId').value;
+            const name = document.getElementById('subjectName').value;
+            const description = document.getElementById('subjectDescription').value;
+            const color = document.getElementById('subjectColor').value;
+
+            if (id) {
+                studySystem.editSubject(id, name, description, color);
+            } else {
+                studySystem.addSubject(name, description, color);
+            }
+
+            closeSubjectModal();
+        }
+
+        function editSubject(id) {
+            openSubjectModal(id);
+        }
+
+        function deleteSubject(id) {
+            studySystem.deleteSubject(id);
+        }
+
+        function openTopicModal(subjectId, topicId = null) {
+            const modal = document.getElementById('topicModal');
+            const title = document.getElementById('topicModalTitle');
+            const form = document.getElementById('topicForm');
+
+            document.getElementById('topicSubjectId').value = subjectId;
+
+            if (topicId) {
+                const subject = studySystem.subjects.find(s => s.id === subjectId);
+                const topic = subject.topics.find(t => t.id === topicId);
+                title.textContent = 'Editar Tema';
+                document.getElementById('topicId').value = topic.id;
+                document.getElementById('topicTitle').value = topic.title;
+                document.getElementById('topicNotes').value = topic.notes || '';
+                document.getElementById('topicTags').value = topic.tags.join(', ');
+                document.getElementById('topicPriority').value = topic.priority;
+            } else {
+                title.textContent = 'Novo Tema';
+                form.reset();
+                document.getElementById('topicId').value = '';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeTopicModal() {
+            document.getElementById('topicModal').classList.remove('active');
+        }
+
+        function saveTopic(event) {
+            event.preventDefault();
+            const subjectId = document.getElementById('topicSubjectId').value;
+            const topicId = document.getElementById('topicId').value;
+            const title = document.getElementById('topicTitle').value;
+            const notes = document.getElementById('topicNotes').value;
+            const tags = document.getElementById('topicTags').value;
+            const priority = document.getElementById('topicPriority').value;
+
+            if (topicId) {
+                studySystem.editTopic(subjectId, topicId, title, notes, tags, priority);
+            } else {
+                studySystem.addTopic(subjectId, title, notes, tags, priority);
+            }
+
+            closeTopicModal();
+        }
+
+        function editTopic(subjectId, topicId) {
+            openTopicModal(subjectId, topicId);
+        }
+
+        function deleteTopic(subjectId, topicId) {
+            studySystem.deleteTopic(subjectId, topicId);
+        }
+
+        function toggleTopicCompletion(subjectId, topicId) {
+            studySystem.toggleTopicCompletion(subjectId, topicId);
+        }
+
+        function openEventModal(id = null) {
+            const modal = document.getElementById('eventModal');
+            const title = document.getElementById('eventModalTitle');
+            const form = document.getElementById('eventForm');
+
+            if (id) {
+                const event = studySystem.events.find(e => e.id === id);
+                title.textContent = 'Editar Evento';
+                document.getElementById('eventId').value = event.id;
+                document.getElementById('eventTitle').value = event.title;
+                document.getElementById('eventDate').value = event.date;
+                document.getElementById('eventTime').value = event.time || '';
+                document.getElementById('eventDescription').value = event.description || '';
+            } else {
+                title.textContent = 'Novo Evento';
+                form.reset();
+                document.getElementById('eventId').value = '';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeEventModal() {
+            document.getElementById('eventModal').classList.remove('active');
+        }
+
+        function saveEvent(event) {
+            event.preventDefault();
+            const id = document.getElementById('eventId').value;
+            const title = document.getElementById('eventTitle').value;
+            const date = document.getElementById('eventDate').value;
+            const time = document.getElementById('eventTime').value;
+            const description = document.getElementById('eventDescription').value;
+
+            if (id) {
+                studySystem.editEvent(id, title, date, time, description);
+            } else {
+                studySystem.addEvent(title, date, time, description);
+            }
+
+            closeEventModal();
+        }
+
+        function editEvent(id) {
+            openEventModal(id);
+        }
+
+        function deleteEvent(id) {
+            studySystem.deleteEvent(id);
+        }
+
+        function openFlashcardModal(id = null) {
+            const modal = document.getElementById('flashcardModal');
+            const title = document.getElementById('flashcardModalTitle');
+            const form = document.getElementById('flashcardForm');
+
+            if (id) {
+                const flashcard = studySystem.flashcards.find(f => f.id === id);
+                title.textContent = 'Editar Flashcard';
+                document.getElementById('flashcardId').value = flashcard.id;
+                document.getElementById('flashcardQuestionInput').value = flashcard.question;
+                document.getElementById('flashcardAnswerInput').value = flashcard.answer;
+                document.getElementById('flashcardDeck').value = flashcard.deck;
+            } else {
+                title.textContent = 'Novo Flashcard';
+                form.reset();
+                document.getElementById('flashcardId').value = '';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeFlashcardModal() {
+            document.getElementById('flashcardModal').classList.remove('active');
+        }
+
+        function saveFlashcard(event) {
+            event.preventDefault();
+            const id = document.getElementById('flashcardId').value;
+            const question = document.getElementById('flashcardQuestionInput').value;
+            const answer = document.getElementById('flashcardAnswerInput').value;
+            const deck = document.getElementById('flashcardDeck').value;
+
+            if (id) {
+                studySystem.editFlashcard(id, question, answer, deck);
+            } else {
+                studySystem.addFlashcard(question, answer, deck);
+            }
+
+            closeFlashcardModal();
+        }
+
+        function editFlashcard(id) {
+            openFlashcardModal(id);
+        }
+
+        function deleteFlashcard(id) {
+            studySystem.deleteFlashcard(id);
+        }
+
+        function filterContent() {
+            const query = document.getElementById('searchInput').value;
+            const filtered = studySystem.filter(query);
+            const grid = document.getElementById('subjectsGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (filtered.length === 0 && query) {
+                grid.innerHTML = '';
+                emptyState.innerHTML = `
+                    <div class="empty-state-icon">🔍</div>
+                    <h2>Nenhum resultado encontrado</h2>
+                    <p>Tente buscar com outros termos</p>
+                `;
+                emptyState.style.display = 'block';
+            } else if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.innerHTML = `
+                    <div class="empty-state-icon">📖</div>
+                    <h2>Nenhuma matéria cadastrada</h2>
+                    <p>Clique em "Nova Matéria" para começar a organizar seus estudos!</p>
+                `;
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                const originalSubjects = studySystem.subjects;
+                studySystem.subjects = filtered;
+                studySystem.render();
+                studySystem.subjects = originalSubjects;
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function exportData() {
+            studySystem.exportData();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (file) {
+                studySystem.importData(file);
+            }
+        }
+
+        // Carregar tema salvo
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            studySystem.updateDeckSelector();
+        });
+
+        // Fechar modais ao clicar fora
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
